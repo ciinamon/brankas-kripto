@@ -1,0 +1,18 @@
+# JANGAN PERNAH commit kunci atau rahasia
+*.pem
+*.key
+*.bkp
+.env
+rahasia*
+
+# Berkas uji besar (dibangkitkan ulang dengan data/buat_data_uji.py)
+data/uji/
+
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+.DS_Store
+.idea/
+.vscode/
+laporan/hal-*.jpg

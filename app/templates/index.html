@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Brankas Kripto — AES-256-GCM / ChaCha20-Poly1305</title>
+<link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+<header>
+  <h1>Brankas Berkas Pribadi Terenkripsi</h1>
+  <p class="sub">AES-256-GCM &amp; ChaCha20-Poly1305 · kunci diturunkan dari kata sandi (scrypt / PBKDF2 / Argon2id)</p>
+</header>
+
+<nav class="tabs">
+  <button class="tab aktif" data-panel="teks">Teks</button>
+  <button class="tab" data-panel="berkas">Berkas</button>
+</nav>
+
+<section class="opsi">
+  <label>Algoritma
+    <select id="alg">{% for a in algoritma %}<option>{{ a }}</option>{% endfor %}</select>
+  </label>
+  <label>Turunan kunci (KDF)
+    <select id="kdf">{% for k in kdf %}<option {% if k=='scrypt' %}selected{% endif %}>{{ k }}</option>{% endfor %}</select>
+  </label>
+  <label class="tumbuh">Kata sandi
+    <input type="password" id="sandi" placeholder="kata sandi kuat, minimal 12 karakter">
+  </label>
+</section>
+
+<!-- ================= TEKS ================= -->
+<main id="panel-teks" class="panel">
+  <div class="kolom">
+    <div class="kartu">
+      <h2>Plainteks</h2>
+      <textarea id="plainteks" rows="9" placeholder="Tulis pesan rahasia di sini…"></textarea>
+      <button class="utama" onclick="enkripsiTeks()">Enkripsi →</button>
+    </div>
+    <div class="kartu">
+      <h2>Cipherteks</h2>
+      <div class="pilihan-format">
+        <label><input type="radio" name="fmt" value="base64" checked> Base64</label>
+        <label><input type="radio" name="fmt" value="hex"> Heksadesimal</label>
+        <button class="kecil" onclick="salin()">Salin</button>
+      </div>
+      <textarea id="cipherteks" rows="9" placeholder="Hasil enkripsi / tempel cipherteks untuk didekripsi"></textarea>
+      <button class="utama" onclick="dekripsiTeks()">← Dekripsi</button>
+    </div>
+  </div>
+  <div id="info-teks" class="info"></div>
+  <div id="pesan-teks" class="pesan"></div>
+</main>
+
+<!-- ================= BERKAS ================= -->
+<main id="panel-berkas" class="panel tersembunyi">
+  <div class="kolom">
+    <div class="kartu">
+      <h2>Enkripsi berkas</h2>
+      <p class="bantuan">Nama berkas asli ikut dienkripsi. Hasil diunduh sebagai <code>.bkp</code>.</p>
+      <input type="file" id="berkas-asli">
+      <button class="utama" onclick="prosesBerkas('enkripsi')">Enkripsi &amp; unduh</button>
+    </div>
+    <div class="kartu">
+      <h2>Dekripsi berkas</h2>
+      <p class="bantuan">Pilih berkas <code>.bkp</code>. Sandi salah atau berkas diubah akan ditolak.</p>
+      <input type="file" id="berkas-bkp" accept=".bkp">
+      <button class="utama" onclick="prosesBerkas('dekripsi')">Dekripsi &amp; unduh</button>
+      <button class="kecil" onclick="infoBerkas()">Lihat metadata (tanpa sandi)</button>
+    </div>
+  </div>
+  <div id="info-berkas" class="info"></div>
+  <div id="pesan-berkas" class="pesan"></div>
+</main>
+
+<footer>Tugas Proyek Keamanan Informasi · Universitas Siliwangi</footer>
+<script src="{{ url_for('static', filename='app.js') }}"></script>
+</body>
+</html>
